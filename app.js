@@ -154,7 +154,7 @@ function App() {
           
             
               
-              {' Irregular Verbs Practice'}
+              Irregular Verbs Practice
             
             {mode === 'quiz' && (
               
@@ -176,7 +176,7 @@ function App() {
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              {'Study Mode'}
+              Study Mode
             
             <button
               onClick={startQuiz}
@@ -187,7 +187,7 @@ function App() {
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              {'Quiz Mode'}
+              Quiz Mode
             
           
 
@@ -195,10 +195,10 @@ function App() {
             
               
                 
-                  {'Verb '}{currentIndex + 1}{' of '}{irregularVerbs.length}
+                  Verb {currentIndex + 1} of {irregularVerbs.length}
                 
                 
-                  {'Infinitive'}
+                  Infinitive
                   {currentVerb.base}
                   {currentVerb.cz}
                 
@@ -209,16 +209,16 @@ function App() {
                   onClick={() => setShowAnswer(true)}
                   className="w-full py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
                 >
-                  {'Show Forms'}
+                  Show Forms
                 
               ) : (
                 
                   
-                    {'Past Simple'}
+                    Past Simple
                     {currentVerb.past}
                   
                   
-                    {'Past Participle'}
+                    Past Participle
                     {currentVerb.participle}
                   
                 
@@ -226,10 +226,10 @@ function App() {
 
               
                 
-                  {'Previous'}
+                  Previous
                 
                 
-                  {'Next'}
+                  Next
                 
               
             
@@ -237,10 +237,10 @@ function App() {
             
               
                 
-                  {'Question '}{currentIndex + 1}
+                  Question {currentIndex + 1}
                 
                 
-                  {'Infinitive'}
+                  Infinitive
                   {currentVerb.base}
                   {currentVerb.cz}
                 
@@ -250,7 +250,7 @@ function App() {
                 
                   
                     
-                      {'Past Simple'}
+                      Past Simple
                     
                     <input
                       type="text"
@@ -262,7 +262,7 @@ function App() {
                   
                   
                     
-                      {'Past Participle'}
+                      Past Participle
                     
                     <input
                       type="text"
@@ -273,7 +273,7 @@ function App() {
                     />
                   
                   
-                    {'Check Answer'}
+                    Check Answer
                   
                 
               ) : (
@@ -283,12 +283,12 @@ function App() {
                       {feedback.correct ? (
                         <>
                           
-                          {'Correct!'}
+                          Correct!
                         </>
                       ) : (
                         <>
                           
-                          {'Not quite'}
+                          Not quite
                         </>
                       )}
                     
@@ -296,11 +296,11 @@ function App() {
                     {!feedback.correct && (
                       
                         
-                          {'Past Simple:'}
+                          Past Simple:
                           {feedback.correctPast}
                         
                         
-                          {'Past Participle:'}
+                          Past Participle:
                           {feedback.correctParticiple}
                         
                       
@@ -310,10 +310,10 @@ function App() {
                   
                     
                       
-                      {'Reset'}
+                      Reset
                     
                     
-                      {'Next Verb'}
+                      Next Verb
                     
                   
                 
@@ -323,7 +323,7 @@ function App() {
         
 
         
-          {'Total verbs in database: '}{irregularVerbs.length}
+          Total verbs in database: {irregularVerbs.length}
         
       
     
