@@ -1,15 +1,19 @@
+Irregular Verbs Practice
+  
+  
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #root {
+      min-height: 100vh;
+    }
+  
 
 
-
   
   
   
-  
-  
-  Irregular Verbs Practice
-  
-
-
   
   
   
@@ -19,9 +23,9 @@
   
   
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js');
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js')
+          .then(function(reg) { console.log('SW registered'); })
+          .catch(function(err) { console.log('SW failed', err); });
       });
     }
-  
-
