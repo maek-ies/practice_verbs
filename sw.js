@@ -1,33 +1,3 @@
-{
-    "name": "Irregular Verbs Practice",
-    "short_name": "Verbs",
-    "description": "Practice English irregular verbs with Czech translations",
-    "start_url": "./",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#4F46E5",
-    "orientation": "portrait",
-    "icons": [
-        {
-            "src": "icons/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "icons/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ]
-}
-```
-
----
-    
-    ## 4. sw.js (Service Worker)
-    ```javascript
 const CACHE_NAME = 'irregular-verbs-v1';
 const urlsToCache = [
     './',
