@@ -1,6 +1,6 @@
-const { useState } = React;
+const { useState, createElement: e } = React;
 
-const irregularVerbs = [
+const verbs = [
   { base: "be", past: "was/were", participle: "been", cz: "být" },
   { base: "become", past: "became", participle: "become", cz: "stát se" },
   { base: "begin", past: "began", participle: "begun", cz: "začít" },
@@ -55,13 +55,6 @@ const irregularVerbs = [
   { base: "write", past: "wrote", participle: "written", cz: "psát" }
 ];
 
-function Icon({ name, className }) {
-  React.useEffect(() => {
-    lucide.createIcons();
-  });
-  return React.createElement('i', { 'data-lucide': name, className });
-}
-
 function App() {
   const [mode, setMode] = useState('study');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,17 +65,17 @@ function App() {
   const [usedVerbs, setUsedVerbs] = useState([]);
 
   const currentVerb = mode === 'quiz' && usedVerbs.length > 0 
-    ? irregularVerbs[usedVerbs[currentIndex]] 
-    : irregularVerbs[currentIndex];
+    ? verbs[usedVerbs[currentIndex]] 
+    : verbs[currentIndex];
 
   const getRandomVerb = () => {
-    if (usedVerbs.length === irregularVerbs.length) {
+    if (usedVerbs.length === verbs.length) {
       setUsedVerbs([]);
       return 0;
     }
     let randomIndex;
     do {
-      randomIndex = Math.floor(Math.random() * irregularVerbs.length);
+      randomIndex = Math.floor(Math.random() * verbs.length);
     } while (usedVerbs.includes(randomIndex));
     return randomIndex;
   };
@@ -98,7 +91,7 @@ function App() {
   };
 
   const checkAnswer = () => {
-    const verb = irregularVerbs[usedVerbs[currentIndex]];
+    const verb = verbs[usedVerbs[currentIndex]];
     const pastCorrect = quizAnswers.past.trim().toLowerCase() === verb.past.toLowerCase();
     const participleCorrect = quizAnswers.participle.trim().toLowerCase() === verb.participle.toLowerCase();
     const isCorrect = pastCorrect && participleCorrect;
@@ -119,7 +112,7 @@ function App() {
 
   const nextVerb = () => {
     if (mode === 'study') {
-      setCurrentIndex((prev) => (prev + 1) % irregularVerbs.length);
+      setCurrentIndex((prev) => (prev + 1) % verbs.length);
       setShowAnswer(false);
     } else {
       const nextVerbIndex = getRandomVerb();
@@ -132,7 +125,7 @@ function App() {
 
   const previousVerb = () => {
     if (mode === 'study') {
-      setCurrentIndex((prev) => (prev - 1 + irregularVerbs.length) % irregularVerbs.length);
+      setCurrentIndex((prev) => (prev - 1 + verbs.length) % verbs.length);
       setShowAnswer(false);
     }
   };
@@ -147,189 +140,147 @@ function App() {
     setUsedVerbs([]);
   };
 
-  return (
-    
+  return e('div', { className: 'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6' },
+    e('div', { className: 'max-w-2xl mx-auto' },
+      e('div', { className: 'bg-white rounded-2xl shadow-xl p-8 mb-6' },
+        e('div', { className: 'flex items-center justify-between mb-6' },
+          e('h1', { className: 'text-3xl font-bold text-indigo-900' }, '📚 Irregular Verbs Practice'),
+          mode === 'quiz' && e('div', { className: 'bg-indigo-100 px-4 py-2 rounded-lg' },
+            e('span', { className: 'font-semibold text-indigo-900' }, '🏆 ' + score.correct + '/' + score.total)
+          )
+        ),
+        
+        e('div', { className: 'flex gap-3 mb-8' },
+          e('button', {
+            onClick: () => mode === 'quiz' ? resetQuiz() : null,
+            disabled: mode === 'study',
+            className: 'flex-1 py-3 px-6 rounded-lg font-semibold transition ' + 
+              (mode === 'study' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')
+          }, 'Study Mode'),
+          e('button', {
+            onClick: startQuiz,
+            disabled: mode === 'quiz',
+            className: 'flex-1 py-3 px-6 rounded-lg font-semibold transition ' +
+              (mode === 'quiz' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')
+          }, 'Quiz Mode')
+        ),
+
+        mode === 'study' ? 
+          e('div', { className: 'space-y-6' },
+            e('div', { className: 'text-center' },
+              e('p', { className: 'text-sm text-gray-500 mb-2' }, 
+                'Verb ' + (currentIndex + 1) + ' of ' + verbs.length),
+              e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
+                e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
+                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
+              )
+            ),
+            
+            !showAnswer ?
+              e('button', {
+                onClick: () => setShowAnswer(true),
+                className: 'w-full py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+              }, 'Show Forms') :
+              e('div', { className: 'space-y-4' },
+                e('div', { className: 'bg-green-50 rounded-lg p-4' },
+                  e('p', { className: 'text-sm text-green-700 font-medium mb-1' }, 'Past Simple'),
+                  e('p', { className: 'text-2xl font-bold text-green-900' }, currentVerb.past)
+                ),
+                e('div', { className: 'bg-blue-50 rounded-lg p-4' },
+                  e('p', { className: 'text-sm text-blue-700 font-medium mb-1' }, 'Past Participle'),
+                  e('p', { className: 'text-2xl font-bold text-blue-900' }, currentVerb.participle)
+                )
+              ),
+            
+            e('div', { className: 'flex gap-3 mt-6' },
+              e('button', {
+                onClick: previousVerb,
+                className: 'flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition'
+              }, 'Previous'),
+              e('button', {
+                onClick: nextVerb,
+                className: 'flex-1 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+              }, 'Next')
+            )
+          ) :
+          
+          e('div', { className: 'space-y-6' },
+            e('div', { className: 'text-center' },
+              e('p', { className: 'text-sm text-gray-500 mb-2' }, 'Question ' + (currentIndex + 1)),
+              e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
+                e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
+                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
+              )
+            ),
+            
+            !feedback ?
+              e('div', { className: 'space-y-4' },
+                e('div', null,
+                  e('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, 'Past Simple'),
+                  e('input', {
+                    type: 'text',
+                    value: quizAnswers.past,
+                    onChange: (ev) => setQuizAnswers({ ...quizAnswers, past: ev.target.value }),
+                    className: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg',
+                    placeholder: 'Enter past simple form'
+                  })
+                ),
+                e('div', null,
+                  e('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, 'Past Participle'),
+                  e('input', {
+                    type: 'text',
+                    value: quizAnswers.participle,
+                    onChange: (ev) => setQuizAnswers({ ...quizAnswers, participle: ev.target.value }),
+                    className: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg',
+                    placeholder: 'Enter past participle form'
+                  })
+                ),
+                e('button', {
+                  onClick: checkAnswer,
+                  disabled: !quizAnswers.past || !quizAnswers.participle,
+                  className: 'w-full py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed'
+                }, 'Check Answer')
+              ) :
+              
+              e('div', { className: 'space-y-4' },
+                e('div', { className: 'rounded-lg p-6 ' + (feedback.correct ? 'bg-green-100' : 'bg-red-100') },
+                  e('div', { className: 'mb-4' },
+                    e('span', { className: 'text-xl font-bold ' + (feedback.correct ? 'text-green-900' : 'text-red-900') },
+                      feedback.correct ? '✓ Correct!' : '✗ Not quite'
+                    )
+                  ),
+                  !feedback.correct && e('div', { className: 'space-y-3' },
+                    e('div', { className: 'p-3 rounded ' + (feedback.pastCorrect ? 'bg-green-50' : 'bg-red-50') },
+                      e('p', { className: 'text-sm font-medium mb-1' }, 'Past Simple:'),
+                      e('p', { className: 'font-semibold' }, feedback.correctPast)
+                    ),
+                    e('div', { className: 'p-3 rounded ' + (feedback.participleCorrect ? 'bg-green-50' : 'bg-red-50') },
+                      e('p', { className: 'text-sm font-medium mb-1' }, 'Past Participle:'),
+                      e('p', { className: 'font-semibold' }, feedback.correctParticiple)
+                    )
+                  )
+                ),
+                e('div', { className: 'flex gap-3' },
+                  e('button', {
+                    onClick: resetQuiz,
+                    className: 'px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition'
+                  }, '↺ Reset'),
+                  e('button', {
+                    onClick: nextVerb,
+                    className: 'flex-1 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+                  }, 'Next Verb')
+                )
+              )
+          )
+      ),
       
-        
-          
-            
-              
-              Irregular Verbs Practice
-            
-            {mode === 'quiz' && (
-              
-                
-                
-                  {score.correct}/{score.total}
-                
-              
-            )}
-          
-
-          
-            <button
-              onClick={() => mode === 'quiz' ? resetQuiz() : null}
-              disabled={mode === 'study'}
-              className={`flex-1 py-3 px-6 rounded-lg font-semibold transition ${
-                mode === 'study'
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              Study Mode
-            
-            <button
-              onClick={startQuiz}
-              disabled={mode === 'quiz'}
-              className={`flex-1 py-3 px-6 rounded-lg font-semibold transition ${
-                mode === 'quiz'
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              Quiz Mode
-            
-          
-
-          {mode === 'study' ? (
-            
-              
-                
-                  Verb {currentIndex + 1} of {irregularVerbs.length}
-                
-                
-                  Infinitive
-                  {currentVerb.base}
-                  {currentVerb.cz}
-                
-              
-
-              {!showAnswer ? (
-                <button
-                  onClick={() => setShowAnswer(true)}
-                  className="w-full py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
-                >
-                  Show Forms
-                
-              ) : (
-                
-                  
-                    Past Simple
-                    {currentVerb.past}
-                  
-                  
-                    Past Participle
-                    {currentVerb.participle}
-                  
-                
-              )}
-
-              
-                
-                  Previous
-                
-                
-                  Next
-                
-              
-            
-          ) : (
-            
-              
-                
-                  Question {currentIndex + 1}
-                
-                
-                  Infinitive
-                  {currentVerb.base}
-                  {currentVerb.cz}
-                
-              
-
-              {!feedback ? (
-                
-                  
-                    
-                      Past Simple
-                    
-                    <input
-                      type="text"
-                      value={quizAnswers.past}
-                      onChange={(e) => setQuizAnswers({ ...quizAnswers, past: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                      placeholder="Enter past simple form"
-                    />
-                  
-                  
-                    
-                      Past Participle
-                    
-                    <input
-                      type="text"
-                      value={quizAnswers.participle}
-                      onChange={(e) => setQuizAnswers({ ...quizAnswers, participle: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                      placeholder="Enter past participle form"
-                    />
-                  
-                  
-                    Check Answer
-                  
-                
-              ) : (
-                
-                  
-                    
-                      {feedback.correct ? (
-                        <>
-                          
-                          Correct!
-                        </>
-                      ) : (
-                        <>
-                          
-                          Not quite
-                        </>
-                      )}
-                    
-                    
-                    {!feedback.correct && (
-                      
-                        
-                          Past Simple:
-                          {feedback.correctPast}
-                        
-                        
-                          Past Participle:
-                          {feedback.correctParticiple}
-                        
-                      
-                    )}
-                  
-
-                  
-                    
-                      
-                      Reset
-                    
-                    
-                      Next Verb
-                    
-                  
-                
-              )}
-            
-          )}
-        
-
-        
-          Total verbs in database: {irregularVerbs.length}
-        
-      
-    
+      e('div', { className: 'bg-white rounded-lg shadow-md p-4 text-center text-sm text-gray-600' },
+        e('p', null, 'Total verbs in database: ' + verbs.length)
+      )
+    )
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  React.createElement(App)
-);
+ReactDOM.createRoot(document.getElementById('root')).render(e(App));
