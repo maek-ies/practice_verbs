@@ -1,27 +1,314 @@
-Irregular Verbs Practice
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Practice English irregular verbs with Czech translations">
+  <meta name="theme-color" content="#4F46E5">
+  <link rel="manifest" href="manifest.json">
+  <title>Irregular Verbs Practice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
   
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    #root {
-      min-height: 100vh;
-    }
-  
+  <script>
+const { useState, createElement: e } = React;
 
+const verbs = [
+  { base: "be", past: "was/were", participle: "been", cz: "být" },
+  { base: "become", past: "became", participle: "become", cz: "stát se" },
+  { base: "begin", past: "began", participle: "begun", cz: "začít" },
+  { base: "break", past: "broke", participle: "broken", cz: "zlomit/rozbít" },
+  { base: "bring", past: "brought", participle: "brought", cz: "přinést" },
+  { base: "build", past: "built", participle: "built", cz: "stavět/postavit" },
+  { base: "buy", past: "bought", participle: "bought", cz: "koupit" },
+  { base: "choose", past: "chose", participle: "chosen", cz: "vybrat" },
+  { base: "come", past: "came", participle: "come", cz: "přijít/přijet" },
+  { base: "cut", past: "cut", participle: "cut", cz: "řezat" },
+  { base: "do", past: "did", participle: "done", cz: "dělat" },
+  { base: "drink", past: "drank", participle: "drunk", cz: "pít" },
+  { base: "drive", past: "drove", participle: "driven", cz: "řídit" },
+  { base: "eat", past: "ate", participle: "eaten", cz: "jíst" },
+  { base: "find", past: "found", participle: "found", cz: "najít" },
+  { base: "fly", past: "flew", participle: "flown", cz: "létat" },
+  { base: "forget", past: "forgot", participle: "forgotten", cz: "zapomenout" },
+  { base: "get", past: "got", participle: "gotten", cz: "dostat" },
+  { base: "give", past: "gave", participle: "given", cz: "dát" },
+  { base: "go", past: "went", participle: "gone", cz: "jít/jet" },
+  { base: "have", past: "had", participle: "had", cz: "mít" },
+  { base: "hear", past: "heard", participle: "heard", cz: "slyšet" },
+  { base: "know", past: "knew", participle: "known", cz: "znát/vědět" },
+  { base: "learn", past: "learned/learnt", participle: "learned/learnt", cz: "učit se" },
+  { base: "leave", past: "left", participle: "left", cz: "odejít" },
+  { base: "lose", past: "lost", participle: "lost", cz: "ztratit" },
+  { base: "make", past: "made", participle: "made", cz: "dělat/vyrábět" },
+  { base: "mean", past: "meant", participle: "meant", cz: "znamenat" },
+  { base: "meet", past: "met", participle: "met", cz: "potkat" },
+  { base: "pay", past: "paid", participle: "paid", cz: "platit" },
+  { base: "put", past: "put", participle: "put", cz: "dát/položit" },
+  { base: "quit", past: "quit", participle: "quit", cz: "skončit" },
+  { base: "read", past: "read", participle: "read", cz: "číst" },
+  { base: "say", past: "said", participle: "said", cz: "říct" },
+  { base: "see", past: "saw", participle: "seen", cz: "vidět" },
+  { base: "sell", past: "sold", participle: "sold", cz: "prodat" },
+  { base: "send", past: "sent", participle: "sent", cz: "poslat" },
+  { base: "set", past: "set", participle: "set", cz: "nastavit" },
+  { base: "shine", past: "shone", participle: "shone", cz: "svítit" },
+  { base: "sleep", past: "slept", participle: "slept", cz: "spát" },
+  { base: "speak", past: "spoke", participle: "spoken", cz: "mluvit" },
+  { base: "spend", past: "spent", participle: "spent", cz: "utratit/strávit" },
+  { base: "steal", past: "stole", participle: "stolen", cz: "krást" },
+  { base: "take", past: "took", participle: "taken", cz: "vzít/brát" },
+  { base: "teach", past: "taught", participle: "taught", cz: "učit" },
+  { base: "tell", past: "told", participle: "told", cz: "říct/říkat" },
+  { base: "think", past: "thought", participle: "thought", cz: "myslet" },
+  { base: "throw", past: "threw", participle: "thrown", cz: "házet/hodit" },
+  { base: "understand", past: "understood", participle: "understood", cz: "rozumět" },
+  { base: "wake up", past: "woke up", participle: "woken up", cz: "vzbudit se" },
+  { base: "win", past: "won", participle: "won", cz: "vyhrát" },
+  { base: "write", past: "wrote", participle: "written", cz: "psát" }
+];
 
+function App() {
+  const [mode, setMode] = useState('study');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState({ past: '', participle: '' });
+  const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [feedback, setFeedback] = useState(null);
+  const [usedVerbs, setUsedVerbs] = useState([]);
+
+  const currentVerb = mode === 'quiz' && usedVerbs.length > 0 
+    ? verbs[usedVerbs[currentIndex]] 
+    : verbs[currentIndex];
+
+  const getRandomVerb = () => {
+    if (usedVerbs.length === verbs.length) {
+      setUsedVerbs([]);
+      return 0;
+    }
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * verbs.length);
+    } while (usedVerbs.includes(randomIndex));
+    return randomIndex;
+  };
+
+  const startQuiz = () => {
+    setMode('quiz');
+    const firstVerb = getRandomVerb();
+    setUsedVerbs([firstVerb]);
+    setCurrentIndex(0);
+    setQuizAnswers({ past: '', participle: '' });
+    setScore({ correct: 0, total: 0 });
+    setFeedback(null);
+  };
+
+  const checkAnswer = () => {
+    const verb = verbs[usedVerbs[currentIndex]];
+    const pastCorrect = quizAnswers.past.trim().toLowerCase() === verb.past.toLowerCase();
+    const participleCorrect = quizAnswers.participle.trim().toLowerCase() === verb.participle.toLowerCase();
+    const isCorrect = pastCorrect && participleCorrect;
+
+    setFeedback({
+      correct: isCorrect,
+      pastCorrect,
+      participleCorrect,
+      correctPast: verb.past,
+      correctParticiple: verb.participle
+    });
+
+    setScore(prev => ({
+      correct: prev.correct + (isCorrect ? 1 : 0),
+      total: prev.total + 1
+    }));
+  };
+
+  const nextVerb = () => {
+    if (mode === 'study') {
+      setCurrentIndex((prev) => (prev + 1) % verbs.length);
+      setShowAnswer(false);
+    } else {
+      const nextVerbIndex = getRandomVerb();
+      setUsedVerbs(prev => [...prev, nextVerbIndex]);
+      setCurrentIndex(prev => prev + 1);
+      setQuizAnswers({ past: '', participle: '' });
+      setFeedback(null);
+    }
+  };
+
+  const previousVerb = () => {
+    if (mode === 'study') {
+      setCurrentIndex((prev) => (prev - 1 + verbs.length) % verbs.length);
+      setShowAnswer(false);
+    }
+  };
+
+  const resetQuiz = () => {
+    setMode('study');
+    setCurrentIndex(0);
+    setShowAnswer(false);
+    setQuizAnswers({ past: '', participle: '' });
+    setScore({ correct: 0, total: 0 });
+    setFeedback(null);
+    setUsedVerbs([]);
+  };
+
+  return e('div', { className: 'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6' },
+    e('div', { className: 'max-w-2xl mx-auto' },
+      e('div', { className: 'bg-white rounded-2xl shadow-xl p-8 mb-6' },
+        e('div', { className: 'flex items-center justify-between mb-6' },
+          e('h1', { className: 'text-3xl font-bold text-indigo-900' }, '📚 Irregular Verbs Practice'),
+          mode === 'quiz' && e('div', { className: 'bg-indigo-100 px-4 py-2 rounded-lg' },
+            e('span', { className: 'font-semibold text-indigo-900' }, '🏆 ' + score.correct + '/' + score.total)
+          )
+        ),
+        
+        e('div', { className: 'flex gap-3 mb-8' },
+          e('button', {
+            onClick: () => mode === 'quiz' ? resetQuiz() : null,
+            disabled: mode === 'study',
+            className: 'flex-1 py-3 px-6 rounded-lg font-semibold transition ' + 
+              (mode === 'study' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')
+          }, 'Study Mode'),
+          e('button', {
+            onClick: startQuiz,
+            disabled: mode === 'quiz',
+            className: 'flex-1 py-3 px-6 rounded-lg font-semibold transition ' +
+              (mode === 'quiz' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300')
+          }, 'Quiz Mode')
+        ),
+
+        mode === 'study' ? 
+          e('div', { className: 'space-y-6' },
+            e('div', { className: 'text-center' },
+              e('p', { className: 'text-sm text-gray-500 mb-2' }, 
+                'Verb ' + (currentIndex + 1) + ' of ' + verbs.length),
+              e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
+                e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
+                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
+              )
+            ),
+            
+            !showAnswer ?
+              e('button', {
+                onClick: () => setShowAnswer(true),
+                className: 'w-full py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+              }, 'Show Forms') :
+              e('div', { className: 'space-y-4' },
+                e('div', { className: 'bg-green-50 rounded-lg p-4' },
+                  e('p', { className: 'text-sm text-green-700 font-medium mb-1' }, 'Past Simple'),
+                  e('p', { className: 'text-2xl font-bold text-green-900' }, currentVerb.past)
+                ),
+                e('div', { className: 'bg-blue-50 rounded-lg p-4' },
+                  e('p', { className: 'text-sm text-blue-700 font-medium mb-1' }, 'Past Participle'),
+                  e('p', { className: 'text-2xl font-bold text-blue-900' }, currentVerb.participle)
+                )
+              ),
+            
+            e('div', { className: 'flex gap-3 mt-6' },
+              e('button', {
+                onClick: previousVerb,
+                className: 'flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition'
+              }, 'Previous'),
+              e('button', {
+                onClick: nextVerb,
+                className: 'flex-1 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+              }, 'Next')
+            )
+          ) :
+          
+          e('div', { className: 'space-y-6' },
+            e('div', { className: 'text-center' },
+              e('p', { className: 'text-sm text-gray-500 mb-2' }, 'Question ' + (currentIndex + 1)),
+              e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
+                e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
+                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
+              )
+            ),
+            
+            !feedback ?
+              e('div', { className: 'space-y-4' },
+                e('div', null,
+                  e('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, 'Past Simple'),
+                  e('input', {
+                    type: 'text',
+                    value: quizAnswers.past,
+                    onChange: (ev) => setQuizAnswers({ ...quizAnswers, past: ev.target.value }),
+                    className: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg',
+                    placeholder: 'Enter past simple form'
+                  })
+                ),
+                e('div', null,
+                  e('label', { className: 'block text-sm font-medium text-gray-700 mb-2' }, 'Past Participle'),
+                  e('input', {
+                    type: 'text',
+                    value: quizAnswers.participle,
+                    onChange: (ev) => setQuizAnswers({ ...quizAnswers, participle: ev.target.value }),
+                    className: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg',
+                    placeholder: 'Enter past participle form'
+                  })
+                ),
+                e('button', {
+                  onClick: checkAnswer,
+                  disabled: !quizAnswers.past || !quizAnswers.participle,
+                  className: 'w-full py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed'
+                }, 'Check Answer')
+              ) :
+              
+              e('div', { className: 'space-y-4' },
+                e('div', { className: 'rounded-lg p-6 ' + (feedback.correct ? 'bg-green-100' : 'bg-red-100') },
+                  e('div', { className: 'mb-4' },
+                    e('span', { className: 'text-xl font-bold ' + (feedback.correct ? 'text-green-900' : 'text-red-900') },
+                      feedback.correct ? '✓ Correct!' : '✗ Not quite'
+                    )
+                  ),
+                  !feedback.correct && e('div', { className: 'space-y-3' },
+                    e('div', { className: 'p-3 rounded ' + (feedback.pastCorrect ? 'bg-green-50' : 'bg-red-50') },
+                      e('p', { className: 'text-sm font-medium mb-1' }, 'Past Simple:'),
+                      e('p', { className: 'font-semibold' }, feedback.correctPast)
+                    ),
+                    e('div', { className: 'p-3 rounded ' + (feedback.participleCorrect ? 'bg-green-50' : 'bg-red-50') },
+                      e('p', { className: 'text-sm font-medium mb-1' }, 'Past Participle:'),
+                      e('p', { className: 'font-semibold' }, feedback.correctParticiple)
+                    )
+                  )
+                ),
+                e('div', { className: 'flex gap-3' },
+                  e('button', {
+                    onClick: resetQuiz,
+                    className: 'px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition'
+                  }, '↺ Reset'),
+                  e('button', {
+                    onClick: nextVerb,
+                    className: 'flex-1 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition'
+                  }, 'Next Verb')
+                )
+              )
+          )
+      ),
+      
+      e('div', { className: 'bg-white rounded-lg shadow-md p-4 text-center text-sm text-gray-600' },
+        e('p', null, 'Total verbs in database: ' + verbs.length)
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+  </script>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js')
@@ -29,3 +316,6 @@ Irregular Verbs Practice
           .catch(function(err) { console.log('SW failed', err); });
       });
     }
+  </script>
+</body>
+</html>
