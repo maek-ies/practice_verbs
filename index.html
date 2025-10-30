@@ -23,58 +23,58 @@
 const { useState, createElement: e } = React;
 
 const verbs = [
-  { base: "be", past: "was/were", participle: "been", cz: "být", example: "I was at home yesterday." },
-  { base: "become", past: "became", participle: "become", cz: "stát se", example: "She became a doctor last year." },
-  { base: "begin", past: "began", participle: "begun", cz: "začít", example: "The movie began at 8 PM." },
-  { base: "break", past: "broke", participle: "broken", cz: "zlomit/rozbít", example: "He broke his arm playing football." },
-  { base: "bring", past: "brought", participle: "brought", cz: "přinést", example: "I brought some snacks to the party." },
-  { base: "build", past: "built", participle: "built", cz: "stavět/postavit", example: "They built a new house in 2020." },
-  { base: "buy", past: "bought", participle: "bought", cz: "koupit", example: "She bought a new car yesterday." },
-  { base: "choose", past: "chose", participle: "chosen", cz: "vybrat", example: "We chose the blue one." },
-  { base: "come", past: "came", participle: "come", cz: "přijít/přijet", example: "They came to visit us last week." },
-  { base: "cut", past: "cut", participle: "cut", cz: "řezat", example: "I cut the paper with scissors." },
-  { base: "do", past: "did", participle: "done", cz: "dělat", example: "I did my homework this morning." },
-  { base: "drink", past: "drank", participle: "drunk", cz: "pít", example: "We drank coffee after dinner." },
-  { base: "drive", past: "drove", participle: "driven", cz: "řídit", example: "He drove to work yesterday." },
-  { base: "eat", past: "ate", participle: "eaten", cz: "jíst", example: "We ate pizza for lunch." },
-  { base: "find", past: "found", participle: "found", cz: "najít", example: "She found her keys under the sofa." },
-  { base: "fly", past: "flew", participle: "flown", cz: "létat", example: "The bird flew away quickly." },
-  { base: "forget", past: "forgot", participle: "forgotten", cz: "zapomenout", example: "I forgot to call you yesterday." },
-  { base: "get", past: "got", participle: "gotten", cz: "dostat", example: "I got a gift for my birthday." },
-  { base: "give", past: "gave", participle: "given", cz: "dát", example: "He gave me a book last week." },
-  { base: "go", past: "went", participle: "gone", cz: "jít/jet", example: "We went to the beach yesterday." },
-  { base: "have", past: "had", participle: "had", cz: "mít", example: "I had a great time at the party." },
-  { base: "hear", past: "heard", participle: "heard", cz: "slyšet", example: "Did you hear that noise?" },
-  { base: "know", past: "knew", participle: "known", cz: "znát/vědět", example: "I knew the answer immediately." },
-  { base: "learn", past: "learned/learnt", participle: "learned/learnt", cz: "učit se", example: "She learned English in London." },
-  { base: "leave", past: "left", participle: "left", cz: "odejít", example: "They left the party early." },
-  { base: "lose", past: "lost", participle: "lost", cz: "ztratit", example: "He lost his wallet on the train." },
-  { base: "make", past: "made", participle: "made", cz: "dělat/vyrábět", example: "I made dinner for my family." },
-  { base: "mean", past: "meant", participle: "meant", cz: "znamenat", example: "What did you mean by that?" },
-  { base: "meet", past: "met", participle: "met", cz: "potkat", example: "We met our friends at the café." },
-  { base: "pay", past: "paid", participle: "paid", cz: "platit", example: "She paid for the tickets." },
-  { base: "put", past: "put", participle: "put", cz: "dát/položit", example: "I put the book on the table." },
-  { base: "quit", past: "quit", participle: "quit", cz: "skončit", example: "He quit his job last month." },
-  { base: "read", past: "read", participle: "read", cz: "číst", example: "I read that book last summer." },
-  { base: "say", past: "said", participle: "said", cz: "říct", example: "She said goodbye before leaving." },
-  { base: "see", past: "saw", participle: "seen", cz: "vidět", example: "Did you see that movie?" },
-  { base: "sell", past: "sold", participle: "sold", cz: "prodat", example: "They sold their car yesterday." },
-  { base: "send", past: "sent", participle: "sent", cz: "poslat", example: "I sent you an email this morning." },
-  { base: "set", past: "set", participle: "set", cz: "nastavit", example: "She set the alarm for 6 AM." },
-  { base: "shine", past: "shone", participle: "shone", cz: "svítit", example: "The sun shone brightly yesterday." },
-  { base: "sleep", past: "slept", participle: "slept", cz: "spát", example: "I slept for 8 hours last night." },
-  { base: "speak", past: "spoke", participle: "spoken", cz: "mluvit", example: "He spoke English very well." },
-  { base: "spend", past: "spent", participle: "spent", cz: "utratit/strávit", example: "We spent the weekend in Prague." },
-  { base: "steal", past: "stole", participle: "stolen", cz: "krást", example: "Someone stole my bicycle." },
-  { base: "take", past: "took", participle: "taken", cz: "vzít/brát", example: "She took the bus to work." },
-  { base: "teach", past: "taught", participle: "taught", cz: "učit", example: "My father taught me how to swim." },
-  { base: "tell", past: "told", participle: "told", cz: "říct/říkat", example: "He told me an interesting story." },
-  { base: "think", past: "thought", participle: "thought", cz: "myslet", example: "I thought about you yesterday." },
-  { base: "throw", past: "threw", participle: "thrown", cz: "házet/hodit", example: "He threw the ball to his friend." },
-  { base: "understand", past: "understood", participle: "understood", cz: "rozumět", example: "I understood the lesson clearly." },
-  { base: "wake up", past: "woke up", participle: "woken up", cz: "vzbudit se", example: "I woke up at 7 AM this morning." },
-  { base: "win", past: "won", participle: "won", cz: "vyhrát", example: "Our team won the match yesterday." },
-  { base: "write", past: "wrote", participle: "written", cz: "psát", example: "She wrote a letter to her friend." }
+  { base: "be", past: "was/were", participle: "been", cz: "být", examplePast: "I was at home yesterday.", exampleParticiple: "I have been to Paris twice." },
+  { base: "become", past: "became", participle: "become", cz: "stát se", examplePast: "She became a doctor last year.", exampleParticiple: "He has become very successful." },
+  { base: "begin", past: "began", participle: "begun", cz: "začít", examplePast: "The movie began at 8 PM.", exampleParticiple: "The work has begun already." },
+  { base: "break", past: "broke", participle: "broken", cz: "zlomit/rozbít", examplePast: "He broke his arm playing football.", exampleParticiple: "The window has been broken." },
+  { base: "bring", past: "brought", participle: "brought", cz: "přinést", examplePast: "I brought some snacks to the party.", exampleParticiple: "She has brought good news." },
+  { base: "build", past: "built", participle: "built", cz: "stavět/postavit", examplePast: "They built a new house in 2020.", exampleParticiple: "The bridge has been built recently." },
+  { base: "buy", past: "bought", participle: "bought", cz: "koupit", examplePast: "She bought a new car yesterday.", exampleParticiple: "I have bought tickets online." },
+  { base: "choose", past: "chose", participle: "chosen", cz: "vybrat", examplePast: "We chose the blue one.", exampleParticiple: "The winner has been chosen." },
+  { base: "come", past: "came", participle: "come", cz: "přijít/přijet", examplePast: "They came to visit us last week.", exampleParticiple: "Spring has come early this year." },
+  { base: "cut", past: "cut", participle: "cut", cz: "řezat", examplePast: "I cut the paper with scissors.", exampleParticiple: "The grass has been cut." },
+  { base: "do", past: "did", participle: "done", cz: "dělat", examplePast: "I did my homework this morning.", exampleParticiple: "The work has been done well." },
+  { base: "drink", past: "drank", participle: "drunk", cz: "pít", examplePast: "We drank coffee after dinner.", exampleParticiple: "I have drunk too much water." },
+  { base: "drive", past: "drove", participle: "driven", cz: "řídit", examplePast: "He drove to work yesterday.", exampleParticiple: "She has driven this route before." },
+  { base: "eat", past: "ate", participle: "eaten", cz: "jíst", examplePast: "We ate pizza for lunch.", exampleParticiple: "I have eaten sushi many times." },
+  { base: "find", past: "found", participle: "found", cz: "najít", examplePast: "She found her keys under the sofa.", exampleParticiple: "The solution has been found." },
+  { base: "fly", past: "flew", participle: "flown", cz: "létat", examplePast: "The bird flew away quickly.", exampleParticiple: "I have flown to London twice." },
+  { base: "forget", past: "forgot", participle: "forgotten", cz: "zapomenout", examplePast: "I forgot to call you yesterday.", exampleParticiple: "Your birthday hasn't been forgotten." },
+  { base: "get", past: "got", participle: "gotten", cz: "dostat", examplePast: "I got a gift for my birthday.", exampleParticiple: "She has gotten better at English." },
+  { base: "give", past: "gave", participle: "given", cz: "dát", examplePast: "He gave me a book last week.", exampleParticiple: "I have given her my number." },
+  { base: "go", past: "went", participle: "gone", cz: "jít/jet", examplePast: "We went to the beach yesterday.", exampleParticiple: "They have gone to Spain." },
+  { base: "have", past: "had", participle: "had", cz: "mít", examplePast: "I had a great time at the party.", exampleParticiple: "We have had this car for years." },
+  { base: "hear", past: "heard", participle: "heard", cz: "slyšet", examplePast: "Did you hear that noise?", exampleParticiple: "I have heard this song before." },
+  { base: "know", past: "knew", participle: "known", cz: "znát/vědět", examplePast: "I knew the answer immediately.", exampleParticiple: "I have known her for years." },
+  { base: "learn", past: "learned/learnt", participle: "learned/learnt", cz: "učit se", examplePast: "She learned English in London.", exampleParticiple: "I have learned a lot today." },
+  { base: "leave", past: "left", participle: "left", cz: "odejít", examplePast: "They left the party early.", exampleParticiple: "He has left the country." },
+  { base: "lose", past: "lost", participle: "lost", cz: "ztratit", examplePast: "He lost his wallet on the train.", exampleParticiple: "I have lost my keys again." },
+  { base: "make", past: "made", participle: "made", cz: "dělat/vyrábět", examplePast: "I made dinner for my family.", exampleParticiple: "This cake was made yesterday." },
+  { base: "mean", past: "meant", participle: "meant", cz: "znamenat", examplePast: "What did you mean by that?", exampleParticiple: "I have always meant to call you." },
+  { base: "meet", past: "met", participle: "met", cz: "potkat", examplePast: "We met our friends at the café.", exampleParticiple: "I have met him several times." },
+  { base: "pay", past: "paid", participle: "paid", cz: "platit", examplePast: "She paid for the tickets.", exampleParticiple: "The bill has been paid." },
+  { base: "put", past: "put", participle: "put", cz: "dát/položit", examplePast: "I put the book on the table.", exampleParticiple: "The documents have been put away." },
+  { base: "quit", past: "quit", participle: "quit", cz: "skončit", examplePast: "He quit his job last month.", exampleParticiple: "She has quit smoking." },
+  { base: "read", past: "read", participle: "read", cz: "číst", examplePast: "I read that book last summer.", exampleParticiple: "I have read all his novels." },
+  { base: "say", past: "said", participle: "said", cz: "říct", examplePast: "She said goodbye before leaving.", exampleParticiple: "Everything has been said." },
+  { base: "see", past: "saw", participle: "seen", cz: "vidět", examplePast: "Did you see that movie?", exampleParticiple: "I have seen this film before." },
+  { base: "sell", past: "sold", participle: "sold", cz: "prodat", examplePast: "They sold their car yesterday.", exampleParticiple: "The house has been sold." },
+  { base: "send", past: "sent", participle: "sent", cz: "poslat", examplePast: "I sent you an email this morning.", exampleParticiple: "The package has been sent." },
+  { base: "set", past: "set", participle: "set", cz: "nastavit", examplePast: "She set the alarm for 6 AM.", exampleParticiple: "The table has been set for dinner." },
+  { base: "shine", past: "shone", participle: "shone", cz: "svítit", examplePast: "The sun shone brightly yesterday.", exampleParticiple: "The stars have shone all night." },
+  { base: "sleep", past: "slept", participle: "slept", cz: "spát", examplePast: "I slept for 8 hours last night.", exampleParticiple: "I haven't slept well lately." },
+  { base: "speak", past: "spoke", participle: "spoken", cz: "mluvit", examplePast: "He spoke English very well.", exampleParticiple: "I have spoken to the manager." },
+  { base: "spend", past: "spent", participle: "spent", cz: "utratit/strávit", examplePast: "We spent the weekend in Prague.", exampleParticiple: "I have spent all my money." },
+  { base: "steal", past: "stole", participle: "stolen", cz: "krást", examplePast: "Someone stole my bicycle.", exampleParticiple: "My phone has been stolen." },
+  { base: "take", past: "took", participle: "taken", cz: "vzít/brát", examplePast: "She took the bus to work.", exampleParticiple: "The photo was taken yesterday." },
+  { base: "teach", past: "taught", participle: "taught", cz: "učit", examplePast: "My father taught me how to swim.", exampleParticiple: "I have taught English for 5 years." },
+  { base: "tell", past: "told", participle: "told", cz: "říct/říkat", examplePast: "He told me an interesting story.", exampleParticiple: "I have told you everything." },
+  { base: "think", past: "thought", participle: "thought", cz: "myslet", examplePast: "I thought about you yesterday.", exampleParticiple: "I have thought about this a lot." },
+  { base: "throw", past: "threw", participle: "thrown", cz: "házet/hodit", examplePast: "He threw the ball to his friend.", exampleParticiple: "The ball has been thrown away." },
+  { base: "understand", past: "understood", participle: "understood", cz: "rozumět", examplePast: "I understood the lesson clearly.", exampleParticiple: "I have understood the problem now." },
+  { base: "wake up", past: "woke up", participle: "woken up", cz: "vzbudit se", examplePast: "I woke up at 7 AM this morning.", exampleParticiple: "I have woken up early today." },
+  { base: "win", past: "won", participle: "won", cz: "vyhrát", examplePast: "Our team won the match yesterday.", exampleParticiple: "We have won three games this month." },
+  { base: "write", past: "wrote", participle: "written", cz: "psát", examplePast: "She wrote a letter to her friend.", exampleParticiple: "The book has been written." }
 ];
 
 function App() {
@@ -231,7 +231,17 @@ function App() {
                       title: 'Listen to pronunciation'
                     }, '🔊')
                   ),
-                  e('p', { className: 'text-2xl font-bold text-green-900' }, currentVerb.past)
+                  e('p', { className: 'text-2xl font-bold text-green-900 mb-3' }, currentVerb.past),
+                  e('div', { className: 'bg-white rounded p-2 border-l-2 border-green-500' },
+                    e('div', { className: 'flex items-center justify-between' },
+                      e('p', { className: 'text-sm text-gray-700 italic' }, currentVerb.examplePast),
+                      e('button', {
+                        onClick: () => speak(currentVerb.examplePast),
+                        className: 'text-base hover:scale-110 transition-transform ml-2',
+                        title: 'Listen to example'
+                      }, '🔊')
+                    )
+                  )
                 ),
                 e('div', { className: 'bg-blue-50 rounded-lg p-4' },
                   e('div', { className: 'flex items-center justify-between mb-1' },
@@ -242,18 +252,17 @@ function App() {
                       title: 'Listen to pronunciation'
                     }, '🔊')
                   ),
-                  e('p', { className: 'text-2xl font-bold text-blue-900' }, currentVerb.participle)
-                ),
-                e('div', { className: 'bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500' },
-                  e('div', { className: 'flex items-center justify-between mb-2' },
-                    e('p', { className: 'text-sm text-amber-700 font-medium' }, '💡 Example:'),
-                    e('button', {
-                      onClick: () => speak(currentVerb.example),
-                      className: 'text-xl hover:scale-110 transition-transform',
-                      title: 'Listen to example'
-                    }, '🔊')
-                  ),
-                  e('p', { className: 'text-base text-gray-800 italic' }, currentVerb.example)
+                  e('p', { className: 'text-2xl font-bold text-blue-900 mb-3' }, currentVerb.participle),
+                  e('div', { className: 'bg-white rounded p-2 border-l-2 border-blue-500' },
+                    e('div', { className: 'flex items-center justify-between' },
+                      e('p', { className: 'text-sm text-gray-700 italic' }, currentVerb.exampleParticiple),
+                      e('button', {
+                        onClick: () => speak(currentVerb.exampleParticiple),
+                        className: 'text-base hover:scale-110 transition-transform ml-2',
+                        title: 'Listen to example'
+                      }, '🔊')
+                    )
+                  )
                 )
               ),
             
