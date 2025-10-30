@@ -1,17 +1,25 @@
-Irregular Verbs Practice
-  
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Practice English irregular verbs with Czech translations">
+  <meta name="theme-color" content="#4F46E5">
+  <link rel="manifest" href="manifest.json">
+  <title>Irregular Verbs Practice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
     body { margin: 0; padding: 0; }
     #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
   
-
-
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
-  
-  
-  
-  
-  
+  <script>
 const { useState, createElement: e } = React;
 
 const verbs = [
@@ -302,9 +310,9 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+  </script>
   
-  
-  
+  <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js')
@@ -312,3 +320,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(e(App));
           .catch(function(err) { console.log('SW failed', err); });
       });
     }
+  </script>
+</body>
+</html>
