@@ -90,6 +90,16 @@ function App() {
     ? verbs[usedVerbs[currentIndex]] 
     : verbs[currentIndex];
 
+  const speak = (text) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.8;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   const getRandomVerb = () => {
     if (usedVerbs.length === verbs.length) {
       setUsedVerbs([]);
@@ -194,7 +204,14 @@ function App() {
                 'Verb ' + (currentIndex + 1) + ' of ' + verbs.length),
               e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
                 e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
-                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('div', { className: 'flex items-center justify-center gap-3 mb-3' },
+                  e('p', { className: 'text-4xl font-bold text-indigo-900' }, currentVerb.base),
+                  e('button', {
+                    onClick: () => speak(currentVerb.base),
+                    className: 'text-2xl hover:scale-110 transition-transform',
+                    title: 'Listen to pronunciation'
+                  }, '🔊')
+                ),
                 e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
               )
             ),
@@ -206,15 +223,36 @@ function App() {
               }, 'Show Forms') :
               e('div', { className: 'space-y-4' },
                 e('div', { className: 'bg-green-50 rounded-lg p-4' },
-                  e('p', { className: 'text-sm text-green-700 font-medium mb-1' }, 'Past Simple'),
+                  e('div', { className: 'flex items-center justify-between mb-1' },
+                    e('p', { className: 'text-sm text-green-700 font-medium' }, 'Past Simple'),
+                    e('button', {
+                      onClick: () => speak(currentVerb.past),
+                      className: 'text-xl hover:scale-110 transition-transform',
+                      title: 'Listen to pronunciation'
+                    }, '🔊')
+                  ),
                   e('p', { className: 'text-2xl font-bold text-green-900' }, currentVerb.past)
                 ),
                 e('div', { className: 'bg-blue-50 rounded-lg p-4' },
-                  e('p', { className: 'text-sm text-blue-700 font-medium mb-1' }, 'Past Participle'),
+                  e('div', { className: 'flex items-center justify-between mb-1' },
+                    e('p', { className: 'text-sm text-blue-700 font-medium' }, 'Past Participle'),
+                    e('button', {
+                      onClick: () => speak(currentVerb.participle),
+                      className: 'text-xl hover:scale-110 transition-transform',
+                      title: 'Listen to pronunciation'
+                    }, '🔊')
+                  ),
                   e('p', { className: 'text-2xl font-bold text-blue-900' }, currentVerb.participle)
                 ),
                 e('div', { className: 'bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500' },
-                  e('p', { className: 'text-sm text-amber-700 font-medium mb-2' }, '💡 Example:'),
+                  e('div', { className: 'flex items-center justify-between mb-2' },
+                    e('p', { className: 'text-sm text-amber-700 font-medium' }, '💡 Example:'),
+                    e('button', {
+                      onClick: () => speak(currentVerb.example),
+                      className: 'text-xl hover:scale-110 transition-transform',
+                      title: 'Listen to example'
+                    }, '🔊')
+                  ),
                   e('p', { className: 'text-base text-gray-800 italic' }, currentVerb.example)
                 )
               ),
@@ -236,7 +274,14 @@ function App() {
               e('p', { className: 'text-sm text-gray-500 mb-2' }, 'Question ' + (currentIndex + 1)),
               e('div', { className: 'bg-indigo-50 rounded-lg p-6 mb-4' },
                 e('p', { className: 'text-sm text-indigo-600 font-medium mb-2' }, 'Infinitive'),
-                e('p', { className: 'text-4xl font-bold text-indigo-900 mb-3' }, currentVerb.base),
+                e('div', { className: 'flex items-center justify-center gap-3 mb-3' },
+                  e('p', { className: 'text-4xl font-bold text-indigo-900' }, currentVerb.base),
+                  e('button', {
+                    onClick: () => speak(currentVerb.base),
+                    className: 'text-2xl hover:scale-110 transition-transform',
+                    title: 'Listen to pronunciation'
+                  }, '🔊')
+                ),
                 e('p', { className: 'text-lg text-gray-600 italic' }, currentVerb.cz)
               )
             ),
